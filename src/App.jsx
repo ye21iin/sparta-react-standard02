@@ -96,8 +96,9 @@ function App() {
   };
 
   const handleDelete = (id) => {
-    const deletedTodos = todos.filter((todo) => {
-      return todo.id !== id;
+    const subject = !todos.find((x) => x.id === id) ? cleared : todos;
+    const deletedTodos = subject.filter((el) => {
+      return el.id !== id;
     });
     setTodos(deletedTodos);
   };
@@ -151,7 +152,9 @@ function App() {
               <Box key={clear.id}>
                 <h4>{clear.title}</h4>
                 <p>{clear.contents}</p>
-                <DeleteBtn>삭제하기</DeleteBtn>
+                <DeleteBtn onClick={() => handleDelete(clear.id)}>
+                  삭제하기
+                </DeleteBtn>
                 <Button>취소</Button>
               </Box>
             );
