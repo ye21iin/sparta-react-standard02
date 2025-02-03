@@ -21,6 +21,7 @@ const List = styled.div`
 const BoxContainer = styled.div`
   margin-top: 20px;
   display: flex;
+  flex-wrap: wrap;
   gap: 20px;
 `;
 
@@ -35,7 +36,17 @@ const Box = styled.div`
   display: grid;
 `;
 
+const DeleteBtn = styled.button`
+  color: red;
+`;
+
+const Button = styled.button`
+  color: blue;
+`;
+
 function App() {
+  const [title, setTitle] = useState("");
+  const [contents, setContents] = useState("");
   const [todos, setTodos] = useState([
     {
       id: 1,
@@ -56,24 +67,41 @@ function App() {
     },
   ]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const newTodo = {
+      id: Date.now(),
+      title: title,
+      contents: contents,
+    };
+    console.log(newTodo);
+    setTodos([...todos, newTodo]);
+  };
+
   return (
     <>
       <GlobalStyle />
       <h1>My Todo List</h1>
-      <Form>
+      <Form onSubmit={handleSubmit}>
+        {/* 입력 폼 */}
         <div>
           <label>
             제목
-            <input />
+            <input value={title} onChange={(e) => setTitle(e.target.value)} />
           </label>
           <label>
             내용
-            <input />
+            <input
+              value={contents}
+              onChange={(e) => setContents(e.target.value)}
+            />
           </label>
         </div>
-        <button>추가하기</button>
+        <button type="submit">추가하기</button>
       </Form>
+
       <List>
+        {/* 진행 중 투두리스트 */}
         <h3>Working.. 🔥</h3>
         <BoxContainer>
           {todos.map((todo) => {
@@ -81,14 +109,15 @@ function App() {
               <Box key={todo.id}>
                 <h4>{todo.title}</h4>
                 <p>{todo.contents}</p>
-                <button>완료</button>
-                <button>삭제하기</button>
+                <Button>완료</Button>
+                <DeleteBtn>삭제하기</DeleteBtn>
               </Box>
             );
           })}
         </BoxContainer>
       </List>
       <List>
+        {/* 완료된 투두리스트 */}
         <h3>Done..! 🎉</h3>
         <BoxContainer>
           {cleared.map((clear) => {
@@ -96,8 +125,8 @@ function App() {
               <Box key={clear.id}>
                 <h4>{clear.title}</h4>
                 <p>{clear.contents}</p>
-                <button>삭제하기</button>
-                <button>취소</button>
+                <DeleteBtn>삭제하기</DeleteBtn>
+                <Button>취소</Button>
               </Box>
             );
           })}
