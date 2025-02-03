@@ -112,6 +112,15 @@ function App() {
     setCleared([...cleared, completed]);
   };
 
+  const handleCancel = (id) => {
+    const cancelled = cleared.find((x) => x.id === id);
+    const newCleared = cleared.filter((el) => {
+      return el.id !== id;
+    });
+    setCleared(newCleared);
+    setTodos([...todos, cancelled]);
+  };
+
   return (
     <>
       <GlobalStyle />
@@ -164,7 +173,7 @@ function App() {
                 <DeleteBtn onClick={() => handleDelete(clear.id)}>
                   삭제하기
                 </DeleteBtn>
-                <Button>취소</Button>
+                <Button onClick={() => handleCancel(clear.id)}>취소</Button>
               </Box>
             );
           })}
