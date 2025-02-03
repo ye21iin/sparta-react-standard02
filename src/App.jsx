@@ -6,12 +6,18 @@ const Form = styled.form`
   background-color: lightgrey;
   height: 40px;
   margin: 10px;
-  padding: 20px;
+  padding: 20px 70px 20px 20px;
   border-radius: 10px;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
+`;
+
+const InputContainer = styled.div`
+  display: flex;
+  gap: 30px;
+  padding: 30px;
 `;
 
 const List = styled.div`
@@ -69,6 +75,11 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!title || !contents) {
+      alert("제목과 내용이 모두 입력되지 않았습니다.");
+      return;
+    }
+
     const newTodo = {
       id: Date.now(),
       title: title,
@@ -76,6 +87,19 @@ function App() {
     };
     console.log(newTodo);
     setTodos([...todos, newTodo]);
+    resetForm();
+  };
+
+  const resetForm = () => {
+    setTitle("");
+    setContents("");
+  };
+
+  const handleDelete = (id) => {
+    const deletedTodos = todos.filter((todo) => {
+      return todo.id !== id;
+    });
+    setTodos(deletedTodos);
   };
 
   return (
@@ -84,7 +108,7 @@ function App() {
       <h1>My Todo List</h1>
       <Form onSubmit={handleSubmit}>
         {/* 입력 폼 */}
-        <div>
+        <InputContainer>
           <label>
             제목
             <input value={title} onChange={(e) => setTitle(e.target.value)} />
@@ -96,7 +120,7 @@ function App() {
               onChange={(e) => setContents(e.target.value)}
             />
           </label>
-        </div>
+        </InputContainer>
         <button type="submit">추가하기</button>
       </Form>
 
@@ -110,7 +134,9 @@ function App() {
                 <h4>{todo.title}</h4>
                 <p>{todo.contents}</p>
                 <Button>완료</Button>
-                <DeleteBtn>삭제하기</DeleteBtn>
+                <DeleteBtn onClick={() => handleDelete(todo.id)}>
+                  삭제하기
+                </DeleteBtn>
               </Box>
             );
           })}
