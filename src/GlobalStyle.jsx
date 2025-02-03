@@ -8,6 +8,14 @@ const GlobalStyle = createGlobalStyle`
         font-weight: 400;
         color: navy;
     }
+    h3{
+        font-size: 30px;
+        font-weight: 600;
+    }
+    h4{
+        font-size: 20px;
+        font-weight: 500;
+    }
 `;
 
 export default GlobalStyle;
